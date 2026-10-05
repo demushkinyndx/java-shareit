@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,46 +15,49 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "items")
+@Table(name = "comments")
 @Getter
 @Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String name;
-
 	@Column(nullable = false, length = 1000)
-	private String description;
-
-	@Column(name = "is_available", nullable = false)
-	private Boolean available;
+	private String text;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id", nullable = false)
+	@JoinColumn(name = "item_id", nullable = false)
 	@ToString.Exclude
-	private User owner;
+	private Item item;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "request_id")
+	@JoinColumn(name = "author_id", nullable = false)
 	@ToString.Exclude
-	private ItemRequest request;
+	private User author;
+
+	@Column(nullable = false)
+	private LocalDateTime created;
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Item)) return false;
-		return id != null && id.equals(((Item) o).getId());
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Comment)) {
+			return false;
+		}
+		return id != null && id.equals(((Comment) o).getId());
 	}
 
 	@Override

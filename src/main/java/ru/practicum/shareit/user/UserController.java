@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
-	private final UserService userService;
+	private final UserServiceInterface userService;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
