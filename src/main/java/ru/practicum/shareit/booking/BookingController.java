@@ -1,8 +1,10 @@
 package ru.practicum.shareit.booking;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import ru.practicum.shareit.item.ItemController;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -35,7 +38,7 @@ public class BookingController {
 	@PatchMapping("/{bookingId}")
 	public BookingDto approve(@RequestHeader(ItemController.X_SHARER_USER_ID) Long ownerId,
 							  @PathVariable Long bookingId,
-							  @RequestParam Boolean approved) {
+							  @RequestParam @NotNull(message = "Параметр approved обязателен") Boolean approved) {
 		return bookingService.approve(ownerId, bookingId, approved);
 	}
 
