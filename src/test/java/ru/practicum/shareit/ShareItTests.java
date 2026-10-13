@@ -115,9 +115,10 @@ class ShareItTests {
 	@Test
 	@DisplayName("возвращаем по itemId")
 	void getItemById() throws Exception {
-		long itemId = createItem(createUser("Порфирий Петрович", "porfiry@roma-3.ru"), "Дрель");
+		long ownerId = createUser("Порфирий Петрович", "porfiry@roma-3.ru");
+		long itemId = createItem(ownerId, "Дрель");
 
-		mvc.perform(get("/items/{id}", itemId))
+		mvc.perform(get("/items/{id}", itemId).header(USER_ID_HEADER, ownerId))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(itemId));
 	}

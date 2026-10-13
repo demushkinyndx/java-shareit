@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.validation.OnCreate;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -23,6 +26,12 @@ public class ItemDto {
 
 	@NotNull(message = "Статус доступности обязателен", groups = OnCreate.class)
 	private Boolean available;
+
+	private BookingShortDto lastBooking;
+
+	private BookingShortDto nextBooking;
+
+	private List<CommentDto> comments;
 
 	private Long requestId;
 }

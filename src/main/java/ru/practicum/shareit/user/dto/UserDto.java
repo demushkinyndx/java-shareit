@@ -19,7 +19,7 @@ public class UserDto {
 	@NotBlank(message = "Имя не может быть пустым", groups = OnCreate.class)
 	private String name;
 
-	@NotBlank(message = "Email не может быть пустым", groups = OnCreate.class)
+	@NotBlank(message = "Email почта не может быть пустой", groups = OnCreate.class)
 	@Email(message = "Некорректный email", groups = {OnCreate.class, OnUpdate.class})
 	private String email;
 }
