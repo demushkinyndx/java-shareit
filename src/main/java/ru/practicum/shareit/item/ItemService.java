@@ -16,8 +16,8 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -31,14 +31,14 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ItemService implements ItemServiceInterface {
 	private final ItemRepository itemRepository;
-	private final UserRepository userRepository;
+	private final UserService userService;
 	private final BookingRepository bookingRepository;
 	private final CommentRepository commentRepository;
 
 	@Override
 	@Transactional
 	public ItemDto create(Long ownerId, ItemDto itemDto) {
-		User owner = findUser(ownerId);
+		User owner = userService.findUser(ownerId);
 		Item item = itemRepository.save(ItemMapper.toItem(itemDto, owner));
 		log.info("Пользователь id={} добавил вещь id={}", ownerId, item.getId());
 		return ItemMapper.toItemDto(item);
@@ -47,7 +47,7 @@ public class ItemService implements ItemServiceInterface {
 	@Override
 	@Transactional
 	public ItemDto update(Long ownerId, Long itemId, ItemDto itemDto) {
-		findUser(ownerId);
+		userService.checkUserExists(ownerId);
 		Item item = findItem(itemId);
 		if (!item.getOwner().getId().equals(ownerId)) {
 			throw new ForbiddenException("Пользователь id=" + ownerId + " не владелец вещи id=" + itemId);
@@ -69,7 +69,7 @@ public class ItemService implements ItemServiceInterface {
 
 	@Override
 	public ItemDto getById(Long userId, Long itemId) {
-		findUser(userId);
+		userService.checkUserExists(userId);
 		Item item = findItem(itemId);
 		ItemDto itemDto = ItemMapper.toItemDto(item);
 		if (item.getOwner().getId().equals(userId)) {
@@ -83,7 +83,7 @@ public class ItemService implements ItemServiceInterface {
 
 	@Override
 	public List<ItemDto> getByOwner(Long ownerId) {
-		findUser(ownerId);
+		userService.checkUserExists(ownerId);
 		List<Item> items = itemRepository.findByOwnerId(ownerId);
 		if (items.isEmpty()) {
 			return List.of();
@@ -125,7 +125,7 @@ public class ItemService implements ItemServiceInterface {
 	@Override
 	@Transactional
 	public CommentDto addComment(Long userId, Long itemId, CommentDto commentDto) {
-		User author = findUser(userId);
+		User author = userService.findUser(userId);
 		Item item = findItem(itemId);
 		LocalDateTime now = LocalDateTime.now();
 
@@ -171,11 +171,6 @@ public class ItemService implements ItemServiceInterface {
 
 	private BookingShortDto toShort(Booking booking) {
 		return BookingMapper.toBookingShortDto(booking);
-	}
-
-	private User findUser(Long userId) {
-		return userRepository.findById(userId)
-				.orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
 	}
 
 	private Item findItem(Long itemId) {

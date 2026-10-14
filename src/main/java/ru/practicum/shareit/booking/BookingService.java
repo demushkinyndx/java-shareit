@@ -11,6 +11,7 @@ import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.UserRepository;
 
@@ -23,6 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BookingService implements BookingServiceInterface {
 	private final BookingRepository bookingRepository;
+	private final UserService userService;
 	private final UserRepository userRepository;
 	private final ItemRepository itemRepository;
 
@@ -68,7 +70,7 @@ public class BookingService implements BookingServiceInterface {
 
 	@Override
 	public BookingDto getById(Long userId, Long bookingId) {
-		checkUserExists(userId);
+		userService.checkUserExists(userId);
 		Booking booking = findBooking(bookingId);
 		Long bookerId = booking.getBooker().getId();
 		Long ownerId = booking.getItem().getOwner().getId();
@@ -80,7 +82,7 @@ public class BookingService implements BookingServiceInterface {
 
 	@Override
 	public List<BookingDto> getByBooker(Long bookerId, BookingState state) {
-		checkUserExists(bookerId);
+		userService.checkUserExists(bookerId);
 		LocalDateTime now = LocalDateTime.now();
 		List<Booking> bookings = switch (state) {
 			case ALL -> bookingRepository.findAllByBooker(bookerId);
@@ -95,7 +97,7 @@ public class BookingService implements BookingServiceInterface {
 
 	@Override
 	public List<BookingDto> getByOwner(Long ownerId, BookingState state) {
-		checkUserExists(ownerId);
+		userService.checkUserExists(ownerId);
 		if (!itemRepository.existsByOwnerId(ownerId)) {
 			throw new NotFoundException("У пользователя id=" + ownerId + " нет вещей");
 		}
@@ -130,12 +132,6 @@ public class BookingService implements BookingServiceInterface {
 	private User findUser(Long userId) {
 		return userRepository.findById(userId)
 				.orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
-	}
-
-	private void checkUserExists(Long userId) {
-		if (!userRepository.existsById(userId)) {
-			throw new NotFoundException("Пользователь с id=" + userId + " не найден");
-		}
 	}
 
 	private Booking findBooking(Long bookingId) {
