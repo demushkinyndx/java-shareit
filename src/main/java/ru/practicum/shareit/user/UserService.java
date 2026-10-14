@@ -64,11 +64,13 @@ public class UserService implements UserServiceInterface {
 		log.info("Удален пользователь id={}", userId);
 	}
 
+	@Override
 	public User findUser(Long userId) {
 		return userRepository.findById(userId)
 				.orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
 	}
 
+	@Override
 	public void checkUserExists(Long userId) {
 		if (!userRepository.existsById(userId)) {
 			throw new NotFoundException("Пользователь с id=" + userId + " не найден");

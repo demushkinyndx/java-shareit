@@ -16,7 +16,9 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.UserService;
+import ru.practicum.shareit.request.ItemRequestServiceInterface;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.user.UserServiceInterface;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -31,7 +33,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ItemService implements ItemServiceInterface {
 	private final ItemRepository itemRepository;
-	private final UserService userService;
+	private final ItemRequestServiceInterface itemRequestService;
+	private final UserServiceInterface userService;
 	private final BookingRepository bookingRepository;
 	private final CommentRepository commentRepository;
 
@@ -39,7 +42,8 @@ public class ItemService implements ItemServiceInterface {
 	@Transactional
 	public ItemDto create(Long ownerId, ItemDto itemDto) {
 		User owner = userService.findUser(ownerId);
-		Item item = itemRepository.save(ItemMapper.toItem(itemDto, owner));
+		ItemRequest request = itemRequestService.findRequest(itemDto.getRequestId());
+		Item item = itemRepository.save(ItemMapper.toItem(itemDto, owner, request));
 		log.info("Пользователь id={} добавил вещь id={}", ownerId, item.getId());
 		return ItemMapper.toItemDto(item);
 	}

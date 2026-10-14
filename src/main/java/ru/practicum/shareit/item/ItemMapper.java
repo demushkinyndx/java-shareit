@@ -23,14 +23,7 @@ public final class ItemMapper {
 				.build();
 	}
 
-	public static Item toItem(ItemDto itemDto, User owner) {
-		ItemRequest request = null;
-		if (itemDto.getRequestId() != null) {
-			request = ItemRequest.builder()
-					.id(itemDto.getRequestId())
-					.build();
-		}
-
+	public static Item toItem(ItemDto itemDto, User owner, ItemRequest request) {
 		return Item.builder()
 				.id(itemDto.getId())
 				.name(itemDto.getName())

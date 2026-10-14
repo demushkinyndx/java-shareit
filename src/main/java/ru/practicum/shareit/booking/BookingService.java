@@ -11,9 +11,8 @@ import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.UserService;
+import ru.practicum.shareit.user.UserServiceInterface;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,14 +23,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BookingService implements BookingServiceInterface {
 	private final BookingRepository bookingRepository;
-	private final UserService userService;
-	private final UserRepository userRepository;
+	private final UserServiceInterface userService;
 	private final ItemRepository itemRepository;
 
 	@Override
 	@Transactional
 	public BookingDto create(Long bookerId, BookingCreateDto bookingCreateDto) {
-		User booker = findUser(bookerId);
+		User booker = userService.findUser(bookerId);
 		Item item = itemRepository.findById(bookingCreateDto.getItemId())
 				.orElseThrow(() -> new NotFoundException(
 						"Вещь с id=" + bookingCreateDto.getItemId() + " не найдена"));
@@ -127,11 +125,6 @@ public class BookingService implements BookingServiceInterface {
 		if (end.isBefore(now)) {
 			throw new BadRequestException("Дата окончания не может быть в прошлом");
 		}
-	}
-
-	private User findUser(Long userId) {
-		return userRepository.findById(userId)
-				.orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
 	}
 
 	private Booking findBooking(Long bookingId) {
