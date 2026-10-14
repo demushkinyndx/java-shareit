@@ -94,7 +94,7 @@ public class ItemService implements ItemServiceInterface {
 				.findApprovedByItemIds(itemIds, BookingStatus.APPROVED)
 				.stream()
 				.collect(Collectors.groupingBy(booking -> booking.getItem().getId()));
-		Map<Long, List<Comment>> commentsByItem = commentRepository.findByItemIdIn(itemIds).stream()
+		Map<Long, List<Item.Comment>> commentsByItem = commentRepository.findByItemIdIn(itemIds).stream()
 				.collect(Collectors.groupingBy(comment -> comment.getItem().getId()));
 		LocalDateTime now = LocalDateTime.now();
 
@@ -134,7 +134,7 @@ public class ItemService implements ItemServiceInterface {
 					"Комментарий можно оставить только после завершённой аренды вещи");
 		}
 
-		Comment comment = commentRepository.save(CommentMapper.toComment(commentDto, item, author));
+		Item.Comment comment = commentRepository.save(CommentMapper.toComment(commentDto, item, author));
 		log.info("Пользователь id={} добавил комментарий id={} к вещи id={}",
 				userId, comment.getId(), itemId);
 		return CommentMapper.toCommentDto(comment);

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CommentMapper {
 
-	public static CommentDto toCommentDto(Comment comment) {
+	public static CommentDto toCommentDto(Item.Comment comment) {
 		return CommentDto.builder()
 				.id(comment.getId())
 				.text(comment.getText())
@@ -20,8 +20,8 @@ public final class CommentMapper {
 				.build();
 	}
 
-	public static Comment toComment(CommentDto commentDto, Item item, User author) {
-		return Comment.builder()
+	public static Item.Comment toComment(CommentDto commentDto, Item item, User author) {
+		return Item.Comment.builder()
 				.text(commentDto.getText())
 				.item(item)
 				.author(author)
