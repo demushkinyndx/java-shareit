@@ -17,7 +17,7 @@ public class ItemRequestController {
         return null;
     }
 
-    @GetMapping("/requests/{requestId}")
+    @GetMapping("/{requestId}")
     public List<ItemRequestDto> getByRequestId(@PathVariable Long requestId) {
         return null;
     }
