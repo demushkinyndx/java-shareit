@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractBaseClient {
-	protected final RestTemplate rest;
+	private final RestTemplate rest;
 
 	public AbstractBaseClient(RestTemplate rest) {
 		this.rest = rest;
@@ -38,6 +38,7 @@ public abstract class AbstractBaseClient {
 	protected <T> ResponseEntity<Object> post(String path, long userId, T body) {
 		return post(path, userId, null, body);
 	}
+
 	protected <T> ResponseEntity<Object> post(long userId, T body) {
 		return post(null, userId, null, body);
 	}
@@ -46,20 +47,8 @@ public abstract class AbstractBaseClient {
 		return makeAndSendRequest(HttpMethod.POST, path, userId, parameters, body);
 	}
 
-	protected <T> ResponseEntity<Object> put(String path, long userId, T body) {
-		return put(path, userId, null, body);
-	}
-
-	protected <T> ResponseEntity<Object> put(String path, long userId, @Nullable Map<String, Object> parameters, T body) {
-		return makeAndSendRequest(HttpMethod.PUT, path, userId, parameters, body);
-	}
-
 	protected <T> ResponseEntity<Object> patch(String path, T body) {
 		return patch(path, null, null, body);
-	}
-
-	protected ResponseEntity<Object> patch(String path, long userId) {
-		return patch(path, userId, null, null);
 	}
 
 	protected <T> ResponseEntity<Object> patch(String path, long userId, T body) {
@@ -72,10 +61,6 @@ public abstract class AbstractBaseClient {
 
 	protected ResponseEntity<Object> delete(String path) {
 		return delete(path, null, null);
-	}
-
-	protected ResponseEntity<Object> delete(String path, long userId) {
-		return delete(path, userId, null);
 	}
 
 	protected ResponseEntity<Object> delete(String path, Long userId, @Nullable Map<String, Object> parameters) {

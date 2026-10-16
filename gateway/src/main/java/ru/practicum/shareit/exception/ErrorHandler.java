@@ -28,7 +28,7 @@ public class ErrorHandler {
 				.filter(Objects::nonNull)
 				.collect(Collectors.joining("; "));
 		if (message.isBlank()) {
-			message = "Ошибка валидации (MethodArgumentNotValidException)";
+			message = "Ошибка валидации, неверный аргумент";
 		}
 		log.warn("Ошибка валидации: {}", message);
 		return new ErrorResponse(message);
@@ -42,7 +42,7 @@ public class ErrorHandler {
 				.filter(Objects::nonNull)
 				.collect(Collectors.joining("; "));
 		if (message.isBlank()) {
-			message = "Ошибка валидации (ConstraintViolationException)";
+			message = "Ошибка валидации, целостность данных";
 		}
 		log.warn("Ошибка валидации: {}", message);
 		return new ErrorResponse(message);
