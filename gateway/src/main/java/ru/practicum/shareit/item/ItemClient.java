@@ -15,13 +15,13 @@ import java.util.Map;
 
 @Service
 public class ItemClient extends AbstractBaseClient {
-	private static final String API_PREFIX = "/items";
+	private static final String SERVER_PATH_PREFIX = "/items";
 
 	@Autowired
 	public ItemClient(@Value("${server.url}") String serverUrl, RestTemplateBuilder builder) {
 		super(
 				builder
-						.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+						.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + SERVER_PATH_PREFIX))
 						.requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
 						.build()
 		);
