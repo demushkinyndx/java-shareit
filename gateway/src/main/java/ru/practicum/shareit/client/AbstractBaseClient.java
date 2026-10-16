@@ -12,10 +12,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-public class BaseClient {
+public abstract class AbstractBaseClient {
 	protected final RestTemplate rest;
 
-	public BaseClient(RestTemplate rest) {
+	public AbstractBaseClient(RestTemplate rest) {
 		this.rest = rest;
 	}
 
@@ -107,16 +107,10 @@ public class BaseClient {
 	}
 
 	private static ResponseEntity<Object> prepareGatewayResponse(ResponseEntity<Object> response) {
-		if (response.getStatusCode().is2xxSuccessful()) {
-			return response;
-		}
-
 		ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(response.getStatusCode());
-
 		if (response.hasBody()) {
 			return responseBuilder.body(response.getBody());
 		}
-
 		return responseBuilder.build();
 	}
 }

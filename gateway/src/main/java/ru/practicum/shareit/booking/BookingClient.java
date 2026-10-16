@@ -8,12 +8,12 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
-import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.client.AbstractBaseClient;
 
 import java.util.Map;
 
 @Service
-public class BookingClient extends BaseClient {
+public class BookingClient extends AbstractBaseClient {
     private static final String API_PREFIX = "/bookings";
 
     @Autowired

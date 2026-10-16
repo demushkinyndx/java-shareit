@@ -1,5 +1,7 @@
 package ru.practicum.shareit.booking.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +23,22 @@ public class BookingCreateDto {
 
 	@NotNull(message = "Дата окончания бронирования обязательна")
 	private LocalDateTime end;
+
+	@JsonIgnore
+	@AssertTrue(message = "Дата окончания должна быть позже даты начала")
+	public boolean isEndAfterStart() {
+		return start == null || end == null || end.isAfter(start);
+	}
+
+	@JsonIgnore
+	@AssertTrue(message = "Дата начала не может быть в прошлом")
+	public boolean isStartNotInPast() {
+		return start == null || !start.isBefore(LocalDateTime.now());
+	}
+
+	@JsonIgnore
+	@AssertTrue(message = "Дата окончания не может быть в прошлом")
+	public boolean isEndNotInPast() {
+		return end == null || !end.isBefore(LocalDateTime.now());
+	}
 }
