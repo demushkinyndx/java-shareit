@@ -125,7 +125,7 @@ class ItemControllerTest {
 		mvc.perform(get("/items/{id}", itemId).header(USER_ID_HEADER, userId))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(10))
-				.andExpect(jsonPath("$.name").value("тепловизор usb"));
+				.andExpect(jsonPath("$.name").value("Тепловизор usb"));
 
 		verify(itemService).getById(userId, itemId);
 	}
