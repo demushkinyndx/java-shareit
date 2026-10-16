@@ -52,7 +52,9 @@
 					<configuration>
 						<systemPropertyVariables>
 							<spring.profiles.active>test</spring.profiles.active>
+							<net.bytebuddy.experimental>true</net.bytebuddy.experimental>
 						</systemPropertyVariables>
+						<argLine>-Dnet.bytebuddy.experimental=true</argLine>
 					</configuration>
 				</plugin>
 				<plugin>
