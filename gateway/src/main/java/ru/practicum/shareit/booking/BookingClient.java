@@ -27,7 +27,7 @@ public class BookingClient extends AbstractBaseClient {
     }
 
     public ResponseEntity<Object> create(Long userId, BookingCreateDto bookingCreateDto) {
-        return post("", userId, bookingCreateDto);
+        return post(userId, bookingCreateDto);
     }
 
     public ResponseEntity<Object> approve(Long userId, Long bookingId, Boolean approved) {

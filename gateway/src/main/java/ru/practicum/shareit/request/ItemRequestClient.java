@@ -7,11 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.client.AbstractBaseClient;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
 
 @Service
-public class ItemRequestClient extends BaseClient {
+public class ItemRequestClient extends AbstractBaseClient {
 	private static final String SERVER_PATH_PREFIX = "/requests";
 
 	@Autowired
@@ -25,7 +25,7 @@ public class ItemRequestClient extends BaseClient {
 	}
 
 	public ResponseEntity<Object> create(Long userId, ItemRequestCreateDto dto) {
-		return post("", userId, dto);
+		return post(userId, dto);
 	}
 
 	public ResponseEntity<Object> getOwn(Long userId) {
