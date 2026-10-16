@@ -27,24 +27,24 @@ public abstract class AbstractBaseClient {
 		return get(path, userId, null);
 	}
 
-	protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, Object> parameters) {
+	protected ResponseEntity<Object> get(String path, @Nullable Long userId, @Nullable Map<String, Object> parameters) {
 		return makeAndSendRequest(HttpMethod.GET, path, userId, parameters, null);
 	}
 
 	protected <T> ResponseEntity<Object> post(T body) {
-		return post(null, null, null, body);
+		return makePost(null, null, body);
 	}
 
 	protected <T> ResponseEntity<Object> post(String path, long userId, T body) {
-		return post(path, userId, null, body);
+		return makePost(path, userId, body);
 	}
 
 	protected <T> ResponseEntity<Object> post(long userId, T body) {
-		return post(null, userId, null, body);
+		return makePost(null, userId, body);
 	}
 
-	protected <T> ResponseEntity<Object> post(String path, Long userId, @Nullable Map<String, Object> parameters, T body) {
-		return makeAndSendRequest(HttpMethod.POST, path, userId, parameters, body);
+	private <T> ResponseEntity<Object> makePost(@Nullable String path, @Nullable Long userId, T body) {
+		return makeAndSendRequest(HttpMethod.POST, path, userId, null, body);
 	}
 
 	protected <T> ResponseEntity<Object> patch(String path, T body) {
@@ -55,19 +55,15 @@ public abstract class AbstractBaseClient {
 		return patch(path, userId, null, body);
 	}
 
-	protected <T> ResponseEntity<Object> patch(String path, Long userId, @Nullable Map<String, Object> parameters, T body) {
+	protected <T> ResponseEntity<Object> patch(String path, @Nullable Long userId, @Nullable Map<String, Object> parameters, T body) {
 		return makeAndSendRequest(HttpMethod.PATCH, path, userId, parameters, body);
 	}
 
 	protected ResponseEntity<Object> delete(String path) {
-		return delete(path, null, null);
+		return makeAndSendRequest(HttpMethod.DELETE, path, null, null, null);
 	}
 
-	protected ResponseEntity<Object> delete(String path, Long userId, @Nullable Map<String, Object> parameters) {
-		return makeAndSendRequest(HttpMethod.DELETE, path, userId, parameters, null);
-	}
-
-	private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId,
+	private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, @Nullable String path, @Nullable Long userId,
 														  @Nullable Map<String, Object> parameters, @Nullable T body) {
 		HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders(userId));
 
@@ -84,7 +80,7 @@ public abstract class AbstractBaseClient {
 		return prepareGatewayResponse(shareitServerResponse);
 	}
 
-	private HttpHeaders defaultHeaders(Long userId) {
+	private HttpHeaders defaultHeaders(@Nullable Long userId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(List.of(MediaType.APPLICATION_JSON));

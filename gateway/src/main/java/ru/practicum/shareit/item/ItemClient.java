@@ -28,7 +28,7 @@ public class ItemClient extends AbstractBaseClient {
 	}
 
 	public ResponseEntity<Object> create(Long ownerId, ItemDto itemDto) {
-		return post("", ownerId, itemDto);
+		return post(null, ownerId, itemDto);
 	}
 
 	public ResponseEntity<Object> update(Long ownerId, Long itemId, ItemDto itemDto) {
