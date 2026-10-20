@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.util.HeaderConstants;
 
 import java.util.List;
 
@@ -21,32 +22,30 @@ import java.util.List;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
-	public static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
-
 	private final ItemServiceInterface itemService;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ItemDto create(@RequestHeader(X_SHARER_USER_ID) Long ownerId,
+	public ItemDto create(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long ownerId,
 						  @RequestBody ItemDto itemDto) {
 		return itemService.create(ownerId, itemDto);
 	}
 
 	@PatchMapping("/{itemId}")
-	public ItemDto update(@RequestHeader(X_SHARER_USER_ID) Long ownerId,
+	public ItemDto update(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long ownerId,
 						  @PathVariable Long itemId,
 						  @RequestBody ItemDto itemDto) {
 		return itemService.update(ownerId, itemId, itemDto);
 	}
 
 	@GetMapping("/{itemId}")
-	public ItemDto getById(@RequestHeader(X_SHARER_USER_ID) Long userId,
+	public ItemDto getById(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId,
 						   @PathVariable Long itemId) {
 		return itemService.getById(userId, itemId);
 	}
 
 	@GetMapping
-	public List<ItemDto> getByOwner(@RequestHeader(X_SHARER_USER_ID) Long ownerId) {
+	public List<ItemDto> getByOwner(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long ownerId) {
 		return itemService.getByOwner(ownerId);
 	}
 
@@ -57,7 +56,7 @@ public class ItemController {
 
 	@PostMapping("/{itemId}/comment")
 	@ResponseStatus(HttpStatus.CREATED)
-	public CommentDto addComment(@RequestHeader(X_SHARER_USER_ID) Long userId,
+	public CommentDto addComment(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId,
 								 @PathVariable Long itemId,
 								 @RequestBody CommentDto commentDto) {
 		return itemService.addComment(userId, itemId, commentDto);

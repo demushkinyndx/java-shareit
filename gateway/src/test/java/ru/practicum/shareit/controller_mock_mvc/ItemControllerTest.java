@@ -15,6 +15,7 @@ import ru.practicum.shareit.item.ItemClient;
 import ru.practicum.shareit.item.ItemController;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.util.HeaderConstants;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ItemController.class)
 @Import(ErrorHandler.class)
 class ItemControllerTest {
-	private static final String USER_ID_HEADER = ItemController.X_SHARER_USER_ID;
+	private static final String USER_ID_HEADER = HeaderConstants.X_SHARER_USER_ID;
 
 	@Autowired
 	private MockMvc mvc;

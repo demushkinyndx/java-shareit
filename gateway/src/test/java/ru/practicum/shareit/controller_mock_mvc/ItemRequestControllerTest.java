@@ -11,10 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.exception.ErrorHandler;
-import ru.practicum.shareit.item.ItemController;
 import ru.practicum.shareit.request.ItemRequestClient;
 import ru.practicum.shareit.request.ItemRequestController;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
+import ru.practicum.shareit.util.HeaderConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ItemRequestController.class)
 @Import(ErrorHandler.class)
 class ItemRequestControllerTest {
-    private static final String USER_ID_HEADER = ItemController.X_SHARER_USER_ID;
+    private static final String USER_ID_HEADER = HeaderConstants.X_SHARER_USER_ID;
 
     @Autowired
     private MockMvc mvc;

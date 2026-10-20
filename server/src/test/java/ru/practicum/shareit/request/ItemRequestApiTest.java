@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.practicum.shareit.util.HeaderConstants;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class ItemRequestApiTest {
-	private static final String USER_ID_HEADER = "X-Sharer-User-Id";
+	private static final String USER_ID_HEADER = HeaderConstants.X_SHARER_USER_ID;
 	private static final AtomicInteger EMAIL_COUNTER = new AtomicInteger();
 
 	@Autowired

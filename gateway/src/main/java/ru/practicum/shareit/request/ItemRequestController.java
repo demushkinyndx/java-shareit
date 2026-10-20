@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.item.ItemController;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
+import ru.practicum.shareit.util.HeaderConstants;
 
 @Validated
 @RestController
@@ -23,23 +23,23 @@ public class ItemRequestController {
 	private final ItemRequestClient itemRequestClient;
 
 	@PostMapping
-	public ResponseEntity<Object> create(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId,
+	public ResponseEntity<Object> create(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId,
 										 @RequestBody @Valid ItemRequestCreateDto dto) {
 		return itemRequestClient.create(userId, dto);
 	}
 
 	@GetMapping
-	public ResponseEntity<Object> getOwn(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId) {
+	public ResponseEntity<Object> getOwn(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId) {
 		return itemRequestClient.getOwn(userId);
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<Object> getAll(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId) {
+	public ResponseEntity<Object> getAll(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId) {
 		return itemRequestClient.getAll(userId);
 	}
 
 	@GetMapping("/{requestId}")
-	public ResponseEntity<Object> getById(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId,
+	public ResponseEntity<Object> getById(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId,
 										  @PathVariable @NotNull(message = "Идентификатор запроса обязателен") Long requestId) {
 		return itemRequestClient.getById(userId, requestId);
 	}

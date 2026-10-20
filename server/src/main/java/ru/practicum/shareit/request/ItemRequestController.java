@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.shareit.item.ItemController;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
+import ru.practicum.shareit.util.HeaderConstants;
 
 import java.util.List;
 
@@ -24,23 +24,23 @@ public class ItemRequestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ItemRequestDto create(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId,
+	public ItemRequestDto create(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId,
 								 @RequestBody ItemRequestCreateDto dto) {
 		return itemRequestService.create(userId, dto);
 	}
 
 	@GetMapping
-	public List<ItemRequestDto> getOwn(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId) {
+	public List<ItemRequestDto> getOwn(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId) {
 		return itemRequestService.getOwn(userId);
 	}
 
 	@GetMapping("/all")
-	public List<ItemRequestDto> getAll(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId) {
+	public List<ItemRequestDto> getAll(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId) {
 		return itemRequestService.getAll(userId);
 	}
 
 	@GetMapping("/{requestId}")
-	public ItemRequestDto getById(@RequestHeader(ItemController.X_SHARER_USER_ID) Long userId,
+	public ItemRequestDto getById(@RequestHeader(HeaderConstants.X_SHARER_USER_ID) Long userId,
 								  @PathVariable Long requestId) {
 		return itemRequestService.getById(userId, requestId);
 	}

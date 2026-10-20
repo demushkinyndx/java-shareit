@@ -15,7 +15,7 @@ import ru.practicum.shareit.booking.BookingClient;
 import ru.practicum.shareit.booking.BookingController;
 import ru.practicum.shareit.booking.dto.BookingCreateDto;
 import ru.practicum.shareit.exception.ErrorHandler;
-import ru.practicum.shareit.item.ItemController;
+import ru.practicum.shareit.util.HeaderConstants;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookingController.class)
 @Import(ErrorHandler.class)
 class BookingControllerTest {
-	private static final String USER_ID_HEADER = ItemController.X_SHARER_USER_ID;
+	private static final String USER_ID_HEADER = HeaderConstants.X_SHARER_USER_ID;
 
 	@Autowired
 	private MockMvc mvc;
@@ -49,8 +49,8 @@ class BookingControllerTest {
 	@DisplayName("POST /bookings создание бронирования")
 	void create() throws Exception {
 		Long bookerId = 2L;
-		LocalDateTime start = LocalDateTime.of(2026, 10, 20, 10, 0);
-		LocalDateTime end = LocalDateTime.of(2026, 10, 22, 10, 0);
+		LocalDateTime start = LocalDateTime.now().plusDays(1);
+		LocalDateTime end = start.plusDays(2);
 		when(bookingClient.create(eq(bookerId), any(BookingCreateDto.class)))
 				.thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
 						"id", 1L,
